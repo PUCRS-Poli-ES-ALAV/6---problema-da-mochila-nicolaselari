@@ -1,0 +1,41 @@
+#exercicios 4 e 5
+
+def knapsack(N, C, itens):
+    maxTab = [[0 for _ in range(C + 1)] for _ in range(N + 1)]
+    iteracoes = 0
+
+    for i in range(1, N + 1):
+        peso_i, valor_i = itens[i]
+        for j in range(1, C + 1):
+            iteracoes += 1
+            if peso_i <= j:
+                maxTab[i][j] = max(
+                    maxTab[i - 1][j],
+                    valor_i + maxTab[i - 1][j - peso_i]
+                )
+            else:
+                maxTab[i][j] = maxTab[i - 1][j]
+
+    print("Valor maximo:", maxTab[N][C])
+    print("Total de iteraçoes:", iteracoes)
+
+    print("\nTabela:")
+    print("     ", end="")
+    for j in range(C + 1):
+        print(f"{j:>3}", end=" ")
+    print()
+    print("    +" + "---+" * (C + 1))
+
+    for i in range(N + 1):
+        print(f"{i:>2} |", end=" ")
+        for j in range(C + 1):
+            print(f"{maxTab[i][j]:>2}", end="  ")
+        print()
+
+    return maxTab[N][C]
+
+itens = [None, (5, 2), (2, 4), (2, 2), (1, 3)]
+N = 4
+C = 7
+
+knapsack(N, C, itens)
